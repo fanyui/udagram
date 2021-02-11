@@ -1,7 +1,17 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+
+jobs:
+  build-compile-fend:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - run: cd udagram-frontend && npm install
+      - run: cd udagram-frontend && npm run build
+
 workflows:
-  node-tests:
+  node-build-tests:
     jobs:
-      - node/test
+      - build-compile-fend
