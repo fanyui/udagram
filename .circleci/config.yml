@@ -10,7 +10,7 @@ executors:
           password: $DOCKER_PASSWORD
   browsers:
     docker:
-      - image: circleci/node:browsers
+      - image: circleci/node:latest-browsers
         auth:
           username: $DOCKER_LOGIN
           password: $DOCKER_PASSWORD
