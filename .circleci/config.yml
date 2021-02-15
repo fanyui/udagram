@@ -1,20 +1,31 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
-
+executors:
+  node:
+    docker:
+      - image: circleci/node
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
+  browsers:
+    docker:
+      - image: circleci/node:browsers
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
 jobs:
   build-compile-fend:
-    executor:
-      name: node/default
+    executor: node
     steps:
       - checkout
       - run: cd udagram-frontend && npm install
       - run: cd udagram-frontend && npm run build
   compile-test-fend:
-    executor:
-      name: node/default
+    executor: browsers
     steps:
       - checkout
+      - node/install-packages
       - run: cd udagram-frontend && npm install
       - run: cd udagram-frontend && npm test
   copy-frontend-files-s3:
