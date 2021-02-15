@@ -1,5 +1,6 @@
 version: 2.1
 orbs:
+  eb: circleci/aws-elastic-beanstalk@1.0.0
   node: circleci/node@3.0.0
 executors:
   node:
@@ -49,6 +50,20 @@ jobs:
             pip3 install awscli 
 
       - run: aws s3 cp udagram-frontend/www s3://${AWS_BUCKET}/ --recursive
+  deploy-backend-ebs:
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
+      - eb/setup
+      - run: cd udagram-api && npm install
+      - run: cd udagram-api && npm run build
+      - run:
+          command: |
+              eb deploy Udagram-dev
+              eb status
+          name: Deploy Archive.zip applicaton to ebs
+          working_directory: udagram-api/www/Archive.zip
 
 workflows:
   node-build-tests:
