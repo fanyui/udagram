@@ -21,11 +21,21 @@ jobs:
       - checkout
       - run: cd udagram-frontend && npm install
       - run: cd udagram-frontend && npm run build
+      - save_cache:
+        key: v1-dependencies-{{ checksum "package-lock.json" }}
+        paths:
+            - node_modules
   compile-test-fend:
     executor: browsers
     steps:
+      - common/chrome-upgrade
+
       - checkout
       - node/install-packages
+      - restore_cache:
+        keys:
+        - v1-dependencies-{{ checksum "package-lock.json" }}
+        - v1-dependencies-
       - run: cd udagram-frontend && npm install
       - run: cd udagram-frontend && npm test
   copy-frontend-files-s3:
@@ -38,6 +48,11 @@ jobs:
           name: Install npm
           command: |
             apk add --update npm
+
+      - restore_cache:
+        keys:
+        - v1-dependencies-{{ checksum "package-lock.json" }}
+        - v1-dependencies-
       - run: cd udagram-frontend && npm install
       - run: cd udagram-frontend && npm run build
       - run:
