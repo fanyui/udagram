@@ -39,6 +39,7 @@ jobs:
 workflows:
   node-build-tests:
     jobs:
+      - build-compile-fend
       - compile-test-fend:
           requires:
             - build-compile-fend
