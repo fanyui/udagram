@@ -1,6 +1,5 @@
 version: 2.1
 orbs:
-  common: okode/common@volatile
   node: circleci/node@3.0.0
 executors:
   node:
@@ -29,8 +28,6 @@ jobs:
   compile-test-fend:
     executor: browsers
     steps:
-      - common/chrome-upgrade
-
       - checkout
       - node/install-packages
       - restore_cache:
