@@ -21,21 +21,14 @@ jobs:
       - checkout
       - run: cd udagram-frontend && npm install
       - run: cd udagram-frontend && npm run build
-      - save_cache:
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
-          paths:
-              - node_modules
-  compile-test-fend:
-    executor: browsers
-    steps:
-      - checkout
-      - node/install-packages
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          - v1-dependencies-
-      - run: cd udagram-frontend && npm install
-      - run: cd udagram-frontend && npm test
+
+  # compile-test-fend:
+  #   executor: browsers
+  #   steps:
+  #     - checkout
+  #     - node/install-packages
+  #     - run: cd udagram-frontend && npm install
+  #     - run: cd udagram-frontend && npm test
   copy-frontend-files-s3:
     docker:
       - image: python:3.7-alpine3.11
@@ -47,10 +40,7 @@ jobs:
           command: |
             apk add --update npm
 
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package-lock.json" }}
-          - v1-dependencies-
+
       - run: cd udagram-frontend && npm install
       - run: cd udagram-frontend && npm run build
       - run:
@@ -64,9 +54,10 @@ workflows:
   node-build-tests:
     jobs:
       - build-compile-fend
-      - compile-test-fend:
-          requires:
-            - build-compile-fend
+      # - compile-test-fend:
+      #     requires:
+      #       - build-compile-fend
       - copy-frontend-files-s3:
           requires:
-            - compile-test-fend
+              - build-compile-fend
+            # - compile-test-fend
