@@ -10,8 +10,38 @@ jobs:
       - checkout
       - run: cd udagram-frontend && npm install
       - run: cd udagram-frontend && npm run build
+  compile-test-fend:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - run: cd udagram-frontend && npm install
+      - run: cd udagram-frontend && npm test
+  copy-frontend-files-s3:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+
+      - run:
+          name: Install npm
+          command: |
+            apk add --update npm
+      - run: cd udagram-frontend && npm install
+      - run: cd udagram-frontend && npm run build
+      - run:
+          name: Install awscli
+          command: |
+            pip3 install awscli 
+
+      - run: aws s3 cp udagram-frontend/www s3://${AWS_BUCKET}/ --recursive
 
 workflows:
   node-build-tests:
     jobs:
-      - build-compile-fend
+      - compile-test-fend:
+          requires:
+            - build-compile-fend
+      - copy-frontend-files-s3:
+          requires:
+            - compile-test-fend
