@@ -61,9 +61,10 @@ jobs:
       - run: cd udagram-api && npm run build
       - run:
           command: |
+              eb init
               eb deploy Udagram-dev
               eb status
-          name: Deploy Archive.zip applicaton to ebs
+          name: Deploy content of www applicaton to ebs
           working_directory: udagram-api/www
 
 workflows:
