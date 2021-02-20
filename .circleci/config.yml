@@ -62,7 +62,7 @@ jobs:
       - run:
           command: |
               eb init -p node.js
-              eb deploy Udagram-dev
+              eb deploy Udagram-env
               eb status
           name: Deploy content of www applicaton to ebs
           working_directory: udagram-api/www
