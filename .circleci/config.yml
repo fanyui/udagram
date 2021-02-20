@@ -61,7 +61,7 @@ jobs:
       - run: cd udagram-api && npm run build
       - run:
           command: |
-              eb init -p node.js
+              eb create  Udagram-env
               eb deploy Udagram-env
               eb status
           name: Deploy content of www applicaton to ebs
