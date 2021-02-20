@@ -1,7 +1,8 @@
 version: 2.1
 orbs:
-  eb: circleci/aws-elastic-beanstalk@1.0.0
-  node: circleci/node@3.0.0
+orbs:
+  eb: circleci/aws-elastic-beanstalk@1.0.1
+  node: circleci/node@4.1.0
 executors:
   node:
     docker:
