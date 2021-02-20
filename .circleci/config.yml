@@ -53,14 +53,10 @@ jobs:
       - run: aws s3 cp udagram-frontend/www s3://${AWS_BUCKET}/ --recursive
   deploy-backend-ebs:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: 'cimg/base:stable'
     steps:
       - checkout
       - eb/setup
-      - run:
-          name: Install npm
-          command: |
-            apk add --update npm
       - run: cd udagram-api && npm install
       - run: cd udagram-api && npm run build
       - run:
