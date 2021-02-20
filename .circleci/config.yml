@@ -63,7 +63,7 @@ jobs:
               eb deploy Udagram-dev
               eb status
           name: Deploy Archive.zip applicaton to ebs
-          working_directory: udagram-api/www/Archive.zip
+          working_directory: udagram-api/www
 
 workflows:
   node-build-tests:
