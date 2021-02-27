@@ -59,13 +59,7 @@ jobs:
       - eb/setup
       - run: cd udagram-api && npm install
       - run: cd udagram-api && npm run build
-      - run:
-          command: |
-              eb init  Udagram-env
-              eb deploy Udagram-env
-              eb status
-          name: Deploy content of www applicaton to ebs
-          working_directory: udagram-api/www
+      - run: cd udagram-api && npm run deploy
 
 workflows:
   node-build-tests:
